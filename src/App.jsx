@@ -10,7 +10,7 @@ import Layout from "./components/Layout.jsx";
 
 function App() {
   return (
-    <div className="container">
+    <div>
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
