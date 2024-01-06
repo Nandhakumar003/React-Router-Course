@@ -7,6 +7,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import Product from "./components/Product/Product.jsx";
 import ProductDetails from "./components/Product/ProductDetails.jsx";
 import Layout from "./components/Layout.jsx";
+import Categoriebylist from "./components/Categoriebylist.jsx";
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
               <Route index element={<Product />} />
               <Route path=":id" element={<ProductDetails />} />
             </Route>
+            <Route path="/category/:categoryid" element={<Categoriebylist />} />
+            <Route path="*" element={<div>404</div>} />
           </Route>
         </Routes>
       </BrowserRouter>

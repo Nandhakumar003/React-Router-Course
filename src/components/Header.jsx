@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Categories from "./Categories";
 const Header = () => {
   return (
     <nav
@@ -30,9 +31,26 @@ const Header = () => {
                 About
               </Link>
             </li>
+
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle text-white"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Categories
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <Categories />
+              </ul>
+            </li>
+
             <li className="nav-item">
               <Link to="/product" className="nav-link text-white">
-                Products
+                All Products
               </Link>
             </li>
           </ul>

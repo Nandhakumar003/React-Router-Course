@@ -1,34 +1,31 @@
-import axios from "axios";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 
-const Product = () => {
-  const [data, setData] = useState([]);
-  const fetchproductData = async () => {
-    const productData = await axios.get("https://fakestoreapi.com/products");
-    localStorage.setItem(
-      "local_product_data",
-      JSON.stringify(productData.data)
+const Categoriebylist = () => {
+  const { categoryid } = useParams();
+  const [category, setCategory] = useState([]);
+  const [reload, setReload] = useState(true);
+
+  const fetchCategorieData = async () => {
+    console.log(category.length);
+    const categorieData = await axios.get(
+      `https://fakestoreapi.com/products/category/${categoryid}`
     );
-    setData(productData.data);
+    setCategory(categorieData.data);
   };
 
   useEffect(() => {
-    const local_data = JSON.parse(localStorage.getItem("local_product_data"));
-    if (local_data != null) {
-      console.log("Data from Local");
-      setData(local_data);
-    } else {
-      console.log("Data from API");
-      fetchproductData();
-    }
-  }, []);
+    fetchCategorieData();
+  }, [categoryid]);
 
   return (
     <div className="container">
       <div className="row g-2 mt-2">
-        {data.length > 0 ? (
-          data.map((product) => (
+        <div>{categoryid.toUpperCase()}</div>
+        {category.length > 0 ? (
+          category.map((product) => (
             <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={product.id}>
               <div className="card" style={{ width: "18rem" }}>
                 <img
@@ -46,7 +43,7 @@ const Product = () => {
                       Buy Now
                     </Link>
                     <Link
-                      to={`${product.id}`}
+                      to={`/product/${product.id}`}
                       className="btn btn-outline-primary"
                     >
                       Get More Details
@@ -64,4 +61,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default Categoriebylist;
