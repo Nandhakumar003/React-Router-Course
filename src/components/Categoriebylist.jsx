@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Categoriebylist = () => {
   const { categoryid } = useParams();
   const [category, setCategory] = useState([]);
-  const [reload, setReload] = useState(true);
+  const [categoryName, setCategoryName] = useState(null);
 
   const fetchCategorieData = async () => {
     console.log(category.length);
@@ -14,6 +14,7 @@ const Categoriebylist = () => {
       `https://fakestoreapi.com/products/category/${categoryid}`
     );
     setCategory(categorieData.data);
+    setCategoryName(categoryid);
   };
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const Categoriebylist = () => {
     <div className="container">
       <div className="row g-2 mt-2">
         <div>{categoryid.toUpperCase()}</div>
-        {category.length > 0 ? (
+        {categoryid == categoryName ? (
           category.map((product) => (
             <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={product.id}>
               <div className="card" style={{ width: "18rem" }}>
