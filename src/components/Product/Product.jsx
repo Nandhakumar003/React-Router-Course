@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 const Product = () => {
   const [data, setData] = useState([]);
+  const [searchstatus, setSearchstatus] = useState(false);
   const fetchproductData = async () => {
     const productData = await axios.get("https://fakestoreapi.com/products");
     localStorage.setItem(
@@ -24,8 +25,41 @@ const Product = () => {
     }
   }, []);
 
+  const handlefiltersChange = (e) => {
+    console.log(e.target.value.length);
+    let filterProd = data.filter((k) =>
+      k.title.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    console.log(filterProd);
+    if (e.target.value.length > 0) {
+      if (filterProd.length > 0) {
+        setData(filterProd);
+      } else {
+        setSearchstatus(true);
+        setData([]);
+      }
+    } else {
+      fetchproductData();
+    }
+  };
+
   return (
     <div className="container">
+      <div className="row mt-1">
+        <div className="col-6">
+          <h5>All Product</h5>
+        </div>
+        <div className="col-6">
+          <input
+            type="search"
+            name="search"
+            id="search"
+            className="form-control"
+            placeholder="Search...."
+            onChange={(e) => handlefiltersChange(e)}
+          />
+        </div>
+      </div>
       <div className="row g-2 mt-2">
         {data.length > 0 ? (
           data.map((product) => (
@@ -56,6 +90,8 @@ const Product = () => {
               </div>
             </div>
           ))
+        ) : searchstatus ? (
+          <div>No Data</div>
         ) : (
           <div>Loading....</div>
         )}

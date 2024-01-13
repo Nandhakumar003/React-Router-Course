@@ -28,6 +28,7 @@ const ProductDetails = () => {
                 src={data.image}
                 className="img-fluid rounded-start"
                 alt="Image"
+                style={{ width: "80%", height: "80%" }}
               />
             </div>
             <div className="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8">
