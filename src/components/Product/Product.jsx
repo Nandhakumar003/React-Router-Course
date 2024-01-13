@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Product = () => {
   const [data, setData] = useState([]);
-  const [searchstatus, setSearchstatus] = useState(false);
+  const [searchstr, setSearchstr] = useState("");
   const fetchproductData = async () => {
     const productData = await axios.get("https://fakestoreapi.com/products");
     localStorage.setItem(
@@ -25,23 +25,7 @@ const Product = () => {
     }
   }, []);
 
-  const handlefiltersChange = (e) => {
-    console.log(e.target.value.length);
-    let filterProd = data.filter((k) =>
-      k.title.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    console.log(filterProd);
-    if (e.target.value.length > 0) {
-      if (filterProd.length > 0) {
-        setData(filterProd);
-      } else {
-        setSearchstatus(true);
-        setData([]);
-      }
-    } else {
-      fetchproductData();
-    }
-  };
+  console.log(data.length);
 
   return (
     <div className="container">
@@ -56,42 +40,53 @@ const Product = () => {
             id="search"
             className="form-control"
             placeholder="Search...."
-            onChange={(e) => handlefiltersChange(e)}
+            onChange={(e) => {
+              setSearchstr(e.target.value);
+            }}
           />
         </div>
       </div>
       <div className="row g-2 mt-2">
         {data.length > 0 ? (
-          data.map((product) => (
-            <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={product.id}>
-              <div className="card" style={{ width: "18rem" }}>
-                <img
-                  src={product.image}
-                  className="card-img-top rounded custom-img mx-auto d-block"
-                  style={{ width: "10rem" }}
-                  alt="Image"
-                />
-                <div className="card-body">
-                  <h5 className="card-title text-truncate">{product.title}</h5>
-                  <p className="card-text">{`#${product.category}`}</p>
-                  <h4 className="card-title">{`${product.price}$`}</h4>
-                  <div className="d-flex justify-content-around">
-                    <Link to="." className="btn btn-danger">
-                      Buy Now
-                    </Link>
-                    <Link
-                      to={`${product.id}`}
-                      className="btn btn-outline-primary"
-                    >
-                      Get More Details
-                    </Link>
+          data
+            .filter((item) =>
+              searchstr.toLowerCase() == ""
+                ? item
+                : item.title.toLowerCase().includes(searchstr.toLowerCase())
+            )
+            .map((product) => (
+              <div
+                className="col-xl-3 col-lg-4 col-md-6 col-12"
+                key={product.id}
+              >
+                <div className="card" style={{ width: "18rem" }}>
+                  <img
+                    src={product.image}
+                    className="card-img-top rounded custom-img mx-auto d-block"
+                    style={{ width: "10rem" }}
+                    alt="Image"
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title text-truncate">
+                      {product.title}
+                    </h5>
+                    <p className="card-text">{`#${product.category}`}</p>
+                    <h4 className="card-title">{`${product.price}$`}</h4>
+                    <div className="d-flex justify-content-around">
+                      <Link to="." className="btn btn-danger">
+                        Buy Now
+                      </Link>
+                      <Link
+                        to={`${product.id}`}
+                        className="btn btn-outline-primary"
+                      >
+                        Get More Details
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))
-        ) : searchstatus ? (
-          <div>No Data</div>
+            ))
         ) : (
           <div>Loading....</div>
         )}
